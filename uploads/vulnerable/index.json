@@ -1,0 +1,38 @@
+[
+ {
+  "id": "evil.txt",
+  "name": "../../evil.txt",
+  "stored_as": "evil.txt",
+  "size": 55,
+  "time": "2026-11-12 13:15:24",
+  "status": "Accepted",
+  "type": "text/plain"
+ },
+ {
+  "id": "fake_program.exe",
+  "name": "fake_program.exe",
+  "stored_as": "fake_program.exe",
+  "size": 67,
+  "time": "2026-11-12 13:14:32",
+  "status": "Accepted",
+  "type": "application/x-msdownload"
+ },
+ {
+  "id": "normal.pdf",
+  "name": "normal.pdf",
+  "stored_as": "normal.pdf",
+  "size": 36,
+  "time": "2026-11-12 13:14:31",
+  "status": "Accepted",
+  "type": "application/pdf"
+ },
+ {
+  "id": "mismatch.png",
+  "name": "mismatch.png",
+  "stored_as": "mismatch.png",
+  "size": 39,
+  "time": "2026-11-12 13:13:39",
+  "status": "Accepted",
+  "type": "image/png"
+ }
+]

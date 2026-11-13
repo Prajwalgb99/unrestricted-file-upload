@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unrestricted File Upload Attack</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="hero">
+  <div class="badge">CYBER SECURITY · ABA DEMONSTRATION</div>
+  <h1>Unrestricted File Upload Attack</h1>
+  <p class="sub">Understanding Web Application File Upload Vulnerabilities</p>
+  <nav><a href="#dashboard">Dashboard</a><a href="#demo">Attack Demo</a><a href="#learn">Learn</a><a href="#compare">Comparison</a></nav>
+</header>
+
+<main>
+<section id="dashboard">
+  <h2>Upload Dashboard</h2>
+  <div class="grid2">
+    {% for mode, title, cls, desc in [('vulnerable','Vulnerable Upload','danger','No validation. Accepts any file type, trusts the filename.'),('secure','Secure Upload','safe','Allowlist + MIME + magic bytes + 5 MB limit + random names.')] %}
+    <article class="card {{ cls }}" data-mode="{{ mode }}">
+      <div class="card-head"><h3>{{ title }}</h3><span class="pill {{ cls }}">{{ 'INSECURE' if mode=='vulnerable' else 'PROTECTED' }}</span></div>
+      <p class="muted">{{ desc }}</p>
+      <label class="drop"><input type="file" class="file-input"><span class="drop-text">Click to choose a file</span></label>
+      <div class="row"><button class="btn upload-btn">Upload</button><button class="btn ghost clear-btn">Reset folder</button></div>
+      <div class="row" style="margin-top: 8px;"><button class="btn ghost traversal-btn" type="button" style="width: 100%; border-style: dashed; font-size: 0.85rem;" title="Simulate an attacker uploading ../../evil.txt">⚡ Test Path Traversal (../../evil.txt)</button></div>
+      <div class="bar"><div class="bar-fill"></div></div>
+      <div class="msg"></div>
+      <ul class="checks"></ul>
+      <h4>Uploaded files</h4>
+      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Size</th><th>Time</th><th>Status</th><th></th></tr></thead><tbody class="rows"></tbody></table></div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="demo">
+  <h2>Attack Demonstration Mode</h2>
+  <p class="muted">All files are harmless dummies created in your browser. Nothing is ever executed.</p>
+  <div class="steps" id="steps">
+    <div class="step"><b>1</b><span>Upload a normal PDF to the <em>vulnerable</em> module</span></div>
+    <div class="step"><b>2</b><span>Upload a text file renamed <code>fake_program.exe</code> to the vulnerable module</span></div>
+    <div class="step"><b>3</b><span>Vulnerable app accepts it: no content validation</span></div>
+    <div class="step"><b>4</b><span>Attempt the same upload in the <em>secure</em> module</span></div>
+    <div class="step"><b>5</b><span>Secure app rejects it</span></div>
+    <div class="step"><b>6</b><span>Why extension checking alone is not enough</span></div>
+  </div>
+  <div class="row center"><button class="btn big" id="runDemo">▶ Run Automated Demo</button><button class="btn ghost" id="resetDemo">Reset</button></div>
+  <div class="grid2">
+    <div class="card danger"><h3>Vulnerable result</h3><div id="resV" class="result muted">Run the demo to see the result.</div></div>
+    <div class="card safe"><h3>Secure result</h3><div id="resS" class="result muted">Run the demo to see the result.</div></div>
+  </div>
+  <div class="note" id="step6" hidden><b>Step 6: Why is checking only the extension insufficient?</b><br>
+  An extension is just text in the filename and the user controls it. Anyone can rename <code>program.exe</code> to <code>photo.png</code>, or the reverse. Only the real <em>content</em> (magic bytes), the declared MIME type, the size and a server-generated filename together give reliable protection.</div>
+</section>
+
+<section id="learn">
+  <h2>Learn: The Vulnerability</h2>
+  <div class="grid3">
+    <div class="card"><h3>What is it?</h3><p>A web app lets users upload files but does not properly check their name, type, content or size. The server then stores or processes whatever it receives.</p></div>
+    <div class="card"><h3>How does it work?</h3><p>The attacker uploads a malicious file disguised as a harmless one (e.g. a script named <code>photo.jpg</code>). If the server stores it somewhere it can be run or opened by others, the attack succeeds.</p></div>
+    <div class="card"><h3>Why is it dangerous?</h3><p>It can lead to remote code execution, defacement, malware distribution, data theft, stored XSS, server overload (huge files) and overwriting of important files.</p></div>
+    <div class="card"><h3>Real-world implications</h3><p>Compromised servers, leaked customer data, ransomware entry points, reputation damage and legal penalties. Upload flaws are a recurring finding in web security assessments.</p></div>
+    <div class="card"><h3>Common causes</h3><ul><li>Trusting the file extension</li><li>Trusting the browser's Content-Type</li><li>No size limit</li><li>Original filename used on disk</li><li>Uploads stored in a web-executable folder</li></ul></div>
+    <div class="card"><h3>Prevention</h3><ul><li>Extension allowlist</li><li>MIME + magic-byte validation</li><li>Maximum size</li><li>Secure, random filenames</li><li>Block path traversal</li><li>Store outside the web root, never execute</li></ul></div>
+  </div>
+</section>
+
+<section id="compare">
+  <h2>Vulnerable vs Secure</h2>
+  <div class="table-wrap"><table class="cmp"><thead><tr><th>Feature</th><th>Vulnerable</th><th>Secure</th></tr></thead><tbody>
+  <tr><td>Extension allowlist</td><td class="bad">✗ None</td><td class="good">✓ PDF, TXT, JPG, PNG</td></tr>
+  <tr><td>MIME-type validation</td><td class="bad">✗ None</td><td class="good">✓ Must match extension</td></tr>
+  <tr><td>Magic-byte check</td><td class="bad">✗ None</td><td class="good">✓ Real content verified</td></tr>
+  <tr><td>Size limit</td><td class="bad">✗ Unlimited (demo cap 25 MB)</td><td class="good">✓ 5 MB</td></tr>
+  <tr><td>Filename handling</td><td class="bad">✗ Client name trusted</td><td class="good">✓ Sanitised + random UUID name</td></tr>
+  <tr><td>Path traversal</td><td class="bad">✗ Not detected</td><td class="good">✓ Rejected</td></tr>
+  <tr><td>Serving</td><td class="bad">Forced download only (demo safety)</td><td class="good">✓ Forced download, outside static folder</td></tr>
+  </tbody></table></div>
+</section>
+</main>
+<footer>Educational project · Harmless dummy files only · Run on localhost</footer>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body></html>

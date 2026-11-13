@@ -1,0 +1,1 @@
+harmless test content for path traversal demonstration

@@ -1,0 +1,38 @@
+[
+ {
+  "id": "c694ca2a7f0941cea4fe9206b4a60c84",
+  "name": "../../evil.txt",
+  "stored_as": "-",
+  "size": 0,
+  "time": "2026-11-12 13:15:39",
+  "status": "Rejected",
+  "type": "text/plain"
+ },
+ {
+  "id": "ef6ceabb18c2478b9ab802eee818fb0e",
+  "name": "fake_program.exe",
+  "stored_as": "-",
+  "size": 0,
+  "time": "2026-11-12 13:14:33",
+  "status": "Rejected",
+  "type": "application/x-msdownload"
+ },
+ {
+  "id": "aa6e097e15fc4dc9aafe31aab8e8aa06",
+  "name": "mismatch.png",
+  "stored_as": "-",
+  "size": 0,
+  "time": "2026-11-12 13:13:57",
+  "status": "Rejected",
+  "type": "image/png"
+ },
+ {
+  "id": "be65e11a17644356972d2fa9d8882b19.txt",
+  "name": "sample.txt",
+  "stored_as": "be65e11a17644356972d2fa9d8882b19.txt",
+  "size": 62,
+  "time": "2026-11-12 13:12:06",
+  "status": "Accepted",
+  "type": "text/plain"
+ }
+]
